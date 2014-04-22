@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    {{ page.body }}
+    {{ page.body | safe }}
     {% if user.is_authenticated %}
         <a href="/admin/page/page/{{ page.slug }}/">(edit)</a>
     {% endif %}
