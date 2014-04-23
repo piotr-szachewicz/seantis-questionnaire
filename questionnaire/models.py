@@ -283,6 +283,14 @@ class Question(models.Model):
         "You may also combine tests appearing in <tt>requiredif</tt> "
         "by joining them with the words <tt>and</tt> or <tt>or</tt>, "
         'eg. <tt>requiredif="Q1,A or Q2,B"</tt>')
+    post_save_code = models.TextField(u"Post save code", blank=True, 
+        help_text="You may execute some code when answer is saved for this question. E.g.:<br/>"
+        "<code>if self.split_answer()[0] >= 18:<br/>"
+        "&nbsp;&nbsp;runinfo.add_tags(['of_age'])<br/>"
+        "else:<br/>"
+        "&nbsp;&nbsp;runinfo.remove_tags(['of_age'])<br/>"
+        "runinfo.save()</code>")
+
     footer = models.TextField(u"Footer", help_text="Footer rendered below the question interpreted as textile", blank=True)
 
 
@@ -403,6 +411,8 @@ class Answer(models.Model):
 
     def save(self, runinfo=None, **kwargs):
         self._update_tags(runinfo)
+        self._execute_post_save_code(runinfo)
+
         super(Answer, self).save(**kwargs)
 
     def _update_tags(self, runinfo):
@@ -421,3 +431,14 @@ class Answer(models.Model):
                 else:
                     runinfo.remove_tags(tags)
         runinfo.save()
+
+    def _execute_post_save_code(self, runinfo):
+        if not self.question.post_save_code:
+            return
+
+        try:
+            exec(self.question.post_save_code)
+        except:
+            print "Error while executing POST_SAVE_CODE for question"
+            import traceback
+            traceback.print_exc()
