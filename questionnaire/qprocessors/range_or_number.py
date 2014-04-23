@@ -3,18 +3,19 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 from json import dumps
 
-@question_proc('range')
-def question_range(request, question):
+@question_proc('range', 'number')
+def question_range_or_number(request, question):
     cd = question.getcheckdict()
     
     rmin, rmax = parse_range(cd)
     rstep = parse_step(cd)
     runit = cd.get('unit', '')
     
-    current = request.POST.get('question_%s' % question.number, rmin)
+    current = request.POST.get('question_%s' % question.number, rmin)   
 
     return {
         'required' : True,
+        'type': question.type,
         'rmin' : rmin,
         'rmax' : rmax,
         'rstep' : rstep,
@@ -23,8 +24,8 @@ def question_range(request, question):
         'jsinclude' : [settings.STATIC_URL+'range.js']
     }
 
-@answer_proc('range')
-def process_range(question, answer):
+@answer_proc('range', 'number')
+def process_range_or_number(question, answer):
     cd = question.getcheckdict()
 
     rmin, rmax = parse_range(cd)
@@ -43,6 +44,7 @@ def process_range(question, answer):
     return dumps([ans])
 
 add_type('range', 'Range of numbers [select]')
+add_type('number', 'Number [input]')
 
 def parse_range(checkdict):
     "Given a checkdict for a range widget return the min and max string values."
