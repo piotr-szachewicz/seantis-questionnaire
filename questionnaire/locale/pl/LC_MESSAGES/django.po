@@ -1,0 +1,190 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-04-25 15:00+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+
+#: .\models.py:16
+msgid "Active"
+msgstr "Aktywny"
+
+#: .\models.py:17
+msgid "Inactive"
+msgstr "Nieaktywny"
+
+#: .\models.py:22
+msgid "State"
+msgstr "Stan"
+
+#: .\models.py:24
+msgid "Surname"
+msgstr "Nazwisko"
+
+#: .\models.py:26
+msgid "Given name"
+msgstr "Imię"
+
+#: .\models.py:27
+msgid "Email"
+msgstr "Email"
+
+#: .\models.py:29
+msgid "Gender"
+msgstr "Płeć"
+
+#: .\models.py:30
+msgid "Unset"
+msgstr "Nieustawione"
+
+#: .\models.py:31
+msgid "Male"
+msgstr "Mężczyzna"
+
+#: .\models.py:32
+msgid "Female"
+msgstr "Kobieta"
+
+#: .\models.py:35
+msgid "Next Run"
+msgstr "Następne uruchomienie"
+
+#: .\models.py:37
+msgid "Form Type"
+msgstr "Typ formularza"
+
+#: .\models.py:39
+msgid "Subject receives emails"
+msgstr "Osoba dostaje emaile"
+
+#: .\models.py:40
+msgid "Subject is sent paper form"
+msgstr "Osobie wysyłany jest papierowy formularz"
+
+#: .\models.py:43
+msgid "Language"
+msgstr "Język"
+
+#: .\views.py:804 .\templates\questionnaire\choice-yesnocomment.html:10
+#: .\templates\questionnaire\questionset.html:103
+msgid "Yes"
+msgstr "Tak"
+
+#: .\views.py:804 .\templates\questionnaire\choice-yesnocomment.html:18
+msgid "No"
+msgstr "Nie"
+
+#: .\views.py:806 .\templates\questionnaire\choice-yesnocomment.html:27
+msgid "Don't Know"
+msgstr "Nie wiem"
+
+#: .\qprocessors\choice.py:38 .\qprocessors\simple.py:68
+msgid "You must select an option"
+msgstr "Musisz wybrać odpowiedź."
+
+#: .\qprocessors\choice.py:42 .\qprocessors\simple.py:72
+#: .\qprocessors\simple.py:74 .\qprocessors\simple.py:76
+#: .\qprocessors\simple.py:79 .\qprocessors\timeperiod.py:56
+msgid "Field cannot be blank"
+msgstr "Pole nie może być puste"
+
+#: .\qprocessors\choice.py:47
+msgid "Invalid option!"
+msgstr "Nieprawidłowa opcja!"
+
+#: .\qprocessors\choice.py:108
+#, python-format
+msgid "You must select at least %d option"
+msgid_plural "You must select at least %d options"
+msgstr[0] "Musisz wybrać przynajmniej %d odpowiedź"
+msgstr[1] "Musisz wybrać przynajmniej %d odpowiedzi"
+
+#: .\qprocessors\custom.py:27
+msgid "Processor not defined for this question"
+msgstr "Processor nie został zdefiniowany dla tego pytania"
+
+#: .\qprocessors\range_or_number.py:46
+msgid "Out of range"
+msgstr "Wartość poza dozwolonym zakresem"
+
+#: .\qprocessors\timeperiod.py:5
+msgid "second(s)"
+msgstr "sekundy"
+
+#: .\qprocessors\timeperiod.py:6
+msgid "minute(s)"
+msgstr "minuty"
+
+#: .\qprocessors\timeperiod.py:7
+msgid "hour(s)"
+msgstr "godziny"
+
+#: .\qprocessors\timeperiod.py:8
+msgid "day(s)"
+msgstr "dni"
+
+#: .\qprocessors\timeperiod.py:9
+msgid "week(s)"
+msgstr "tygodnie"
+
+#: .\qprocessors\timeperiod.py:10
+msgid "month(s)"
+msgstr "miesiące"
+
+#: .\qprocessors\timeperiod.py:11
+msgid "year(s)"
+msgstr "lata"
+
+#: .\qprocessors\timeperiod.py:42 .\qprocessors\timeperiod.py:58
+msgid "Invalid time period"
+msgstr "Nieprawidłowy okres czasu"
+
+#: .\qprocessors\timeperiod.py:48
+msgid "Time period must be a whole number"
+msgstr "Okres czasu musi być liczbą całkowitą"
+
+#: .\templates\admin\questionnaire\question\change_form.html:10
+msgid "Choices"
+msgstr "Wybory"
+
+#: .\templates\admin\questionnaire\question\change_form.html:12
+msgid "Sortid determines the choice order."
+msgstr "Sortid określa kolejność pól wyboru."
+
+#: .\templates\admin\questionnaire\question\change_form.html:13
+msgid ""
+"Short values will appear in exported data and are \n"
+"referenced in 'Additional checks' fields.  Numbers, letters \n"
+"or single words are valid."
+msgstr "W eksportowanych danych będą widoczne krótkie wartości i są\n"
+"używane do tworzenia powiązań w polu 'Additional checks'.\n"
+"Liczby, litery i pojedyncze wyrazy są poprawnymi wartościami."
+
+#: .\templates\questionnaire\choice-yesnocomment.html:35
+msgid "comment"
+msgstr "Komentarz"
+
+#: .\templates\questionnaire\questionset.html:61
+msgid "edit"
+msgstr "Edytuj"
+
+#: .\templates\questionnaire\questionset.html:98
+msgid "Continue"
+msgstr "Kontynuuj"
+
+#: .\templates\questionnaire\questionset.html:103
+msgid "return to previous page"
+msgstr "Powróć do poprzedniej strony"
