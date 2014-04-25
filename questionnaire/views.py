@@ -947,6 +947,7 @@ def generate_run(request, questionnaire_id):
     qu = get_object_or_404(Questionnaire, id=questionnaire_id)
     qs = qu.questionsets()[0]
     su = Subject.objects.filter(givenname='Anonymous', surname='User')[0:1]
+    tags = request.GET.get('tags', '')
     if su:
         su = su[0]
     else:
@@ -957,8 +958,8 @@ def generate_run(request, questionnaire_id):
     str_to_hash += settings.SECRET_KEY
     key = md5(str_to_hash).hexdigest()
 
-    run = RunInfo(subject=su, random=key, runid=key, questionset=qs)
+    run = RunInfo(subject=su, random=key, runid=key, questionset=qs, tags=tags)
     run.save()
-    
+
     return HttpResponseRedirect(reverse('questionnaire', kwargs={'runcode': key}))
 
