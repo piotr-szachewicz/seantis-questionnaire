@@ -6,12 +6,16 @@ from json import dumps
 @question_proc('range', 'number')
 def question_range_or_number(request, question):
     cd = question.getcheckdict()
-    
+
     rmin, rmax = parse_range(cd)
     rstep = parse_step(cd)
     runit = cd.get('unit', '')
-    
-    current = request.POST.get('question_%s' % question.number, rmin)   
+
+    current = request.POST.get('question_%s' % question.number, rmin)
+
+    jsinclude = []
+    if question.type == 'range':
+        jsinclude = [settings.STATIC_URL+'range.js']
 
     return {
         'required' : True,
@@ -21,7 +25,7 @@ def question_range_or_number(request, question):
         'rstep' : rstep,
         'runit' : runit,
         'current' : current,
-        'jsinclude' : [settings.STATIC_URL+'range.js']
+        'jsinclude' : jsinclude
     }
 
 @answer_proc('range', 'number')
