@@ -26,7 +26,7 @@ import logging
 import random
 from hashlib import md5
 import re
-from utils import has_tag
+from utils import has_tag, get_setting
 
 def r2r(tpl, request, **contextdict):
     "Shortcut to use RequestContext instead of Context in templates"
@@ -305,12 +305,12 @@ def questionnaire(request, runcode=None, qs=None):
 
     if request.method != "POST":
         if qs is not None:
-            qs = get_object_or_404(QuestionSet, sortid=qs, section=runinfo.questionset.section)
-            if runinfo.random.startswith('test:'):
-                pass # ok for testing
-            elif qs.sortid > runinfo.questionset.sortid:
+            qs = get_object_or_404(QuestionSet, sortid=qs, section__questionnaire=runinfo.questionset.questionnaire())
+            #if runinfo.random.startswith('test:'):
+            #    pass # ok for testing
+            #elif qs.sortid > runinfo.questionset.sortid:
                 # you may jump back, but not forwards
-                return redirect_to_qs(runinfo)
+            #    return redirect_to_qs(runinfo)
             runinfo.questionset = qs
             runinfo.save()
             transaction.commit()
@@ -453,6 +453,7 @@ def show_questionnaire(request, runinfo, errors={}):
 
     Also add the javascript dependency code.
     """
+    request.runinfo = runinfo
     questions = runinfo.questionset.questions()
 
     qlist = []
@@ -521,6 +522,8 @@ def show_questionnaire(request, runinfo, errors={}):
         has_progress = True
         async_progress = False
 
+    show_section_navigation = get_setting('QUESTIONNAIRE_SECTION_NAVIGATION', False)
+
     if has_progress:
         if async_progress:
             progress = cache.get('progress' + runinfo.random, 1)
@@ -546,6 +549,7 @@ def show_questionnaire(request, runinfo, errors={}):
         errors=errors,
         qlist=qlist,
         progress=progress,
+        show_section_navigation=show_section_navigation,
         triggers=jstriggers,
         qvalues=qvalues,
         jsinclude=jsinclude,

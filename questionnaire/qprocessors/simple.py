@@ -1,12 +1,12 @@
 from questionnaire import *
 from django.utils.translation import ugettext as _
 from json import dumps
+from questionnaire.utils import get_answer
 
 @question_proc('choice-yesno','choice-yesnocomment','choice-yesnodontknow')
 def question_yesno(request, question):
-    key = "question_%s" % question.number
     key2 = "question_%s_comment" % question.number
-    val = request.POST.get(key, None)
+    val = get_answer(question, request)
     cmt = request.POST.get(key2, '')
     qtype = question.get_type()
     cd = question.getcheckdict()
@@ -49,10 +49,9 @@ def question_yesno(request, question):
 
 @question_proc('open', 'open-textfield')
 def question_open(request, question):
-    key = "question_%s" % question.number
-    value = question.getcheckdict().get('default','')
-    if key in request.POST:
-        value = request.POST[key]
+    value = get_answer(question, request)
+    if not value:
+        value = question.getcheckdict().get('default','')
     return {
         'required' : question.getcheckdict().get('required', False),
         'value' : value,

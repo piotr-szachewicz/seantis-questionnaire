@@ -39,6 +39,21 @@
     </div>
     {% endif %}
 
+	{% if show_section_navigation %}
+	<div class="questionnaire-sections">
+		Questionnaire sections:
+		<ul>
+		{% for section in questionset.questionnaire.sections %}
+		{% with section.get_first_questionset as first_questionset %}
+			<li>
+				<a href="/q/{{runinfo.runid}}/{{first_questionset.sortid}}">{{ section.name }}</a>
+			</li>
+		{% endwith %}
+		{% endfor %}
+		</ul>
+	</div>
+	{% endif %}
+
     <div class="questionset-title">
     {{ questionset.text }}
     </div>

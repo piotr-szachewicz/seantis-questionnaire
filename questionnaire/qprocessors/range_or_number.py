@@ -2,6 +2,7 @@ from questionnaire import *
 from django.conf import settings
 from django.utils.translation import ugettext as _
 from json import dumps
+from questionnaire.utils import get_answer
 
 @question_proc('range', 'number')
 def question_range_or_number(request, question):
@@ -11,7 +12,7 @@ def question_range_or_number(request, question):
     rstep = parse_step(cd)
     runit = cd.get('unit', '')
 
-    current = request.POST.get('question_%s' % question.number, rmin)
+    current = get_answer(question, request)
 
     jsinclude = []
     if question.type == 'range':

@@ -1,4 +1,5 @@
 #!/usr/bin/python
+from django.conf import settings
 
 def split_numal(val):
     """Split, for example, '1a' into (1, 'a')
@@ -43,6 +44,64 @@ def numal0_sort(a, b):
 def has_tag(tag, runinfo):
     """ Returns true if the given runinfo contains the given tag. """
     return tag in (t.strip() for t in runinfo.tags.split(','))
+
+def get_answer(question, request, multiple=False):
+    from models import Answer
+    # get current question value - from request or from the database
+    current = None
+    if request:
+        current = request.POST.get('question_%s' % question.number, None)
+    if not current:
+        # if the current value doesn't exist in the POST data, find one in the database 
+        answer = Answer.get_answer(request.runinfo.runid, question.id)
+        if answer:
+            current = answer.split_answer()
+            if not multiple:
+                return current[0]
+    return current
+
+def get_answer_multiple(question,request):    
+    cd = question.getcheckdict()
+    defaults = cd.get('default','').split(',')
+
+    choices = []
+    answers = get_answer(question, request, True)
+    if answers:
+        extra_answers = answers[-1]
+    else:
+        extra_answers = []
+        answers = []
+
+    for choice in question.choices():
+        key = "question_%s_multiple_%d" % (question.number, choice.sortid)
+        if key in request.POST or choice.value in answers or \
+            (request.method == 'GET' and choice.value in defaults):
+            choices.append( (choice, key, ' checked',) )
+        else:
+            choices.append( (choice, key, '',) )
+    
+    extracount = int(cd.get('extracount', 0))
+    if not extracount and question.type == 'choice-multiple-freeform':
+        extracount = 1
+    extras = []
+    for i in range(extracount):
+        key = "question_%s_more%d" % (question.number, i+1)
+
+        data = ''
+        if key in request.POST:
+            data = request.POST[key]
+        elif len(extra_answers) > i:
+            data = extra_answers[i]
+        
+        extras.append( (key, data,) )
+    
+    return choices, extras
+
+def get_setting(key, default=None):
+    try:
+        return getattr(settings, key, default) 
+    except AttributeError:
+        return default
 
 if __name__ == "__main__":
     import doctest

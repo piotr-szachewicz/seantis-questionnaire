@@ -104,6 +104,13 @@ class Section(SortableModel):
               QuestionSet.objects.filter(section=self).order_by('sortid')
         return self.__qscache
 
+    def get_first_questionset(self):
+        questionsets = self.questionsets()
+        if len(questionsets) > 0:
+            return questionsets[0]
+        else:
+            return None
+
     def __unicode__(self):
         return self.name
 
@@ -419,6 +426,13 @@ class Answer(models.Model):
 
     def __unicode__(self):
         return "Answer(%s: %s, %s)" % (self.question.number, self.subject.surname, self.subject.givenname)
+
+    @staticmethod
+    def get_answer(runid, question_id):
+        try:
+            return Answer.objects.get(runid=runid, question_id=question_id)
+        except Answer.DoesNotExist:
+            return None
 
     def split_answer(self):
         """
