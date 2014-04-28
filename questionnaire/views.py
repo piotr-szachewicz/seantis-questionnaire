@@ -26,6 +26,7 @@ import logging
 import random
 from hashlib import md5
 import re
+from utils import has_tag
 
 def r2r(tpl, request, **contextdict):
     "Shortcut to use RequestContext instead of Context in templates"
@@ -486,7 +487,7 @@ def show_questionnaire(request, runinfo, errors={}):
             'qalpha_class' : _qalpha and (ord(_qalpha[-1]) % 2 \
                                           and ' alodd' or ' aleven') or '',
         }
-        
+
         # substitute answer texts
         substitute_answer(qvalues, question)
 
@@ -512,9 +513,9 @@ def show_questionnaire(request, runinfo, errors={}):
                 jstriggers.extend(qdict['jstriggers'])
             if 'qvalue' in qdict and not question.number in cookiedict:
                 qvalues[question.number] = qdict['qvalue']
-                
+
         qlist.append( (question, qdict) )
-    
+
     try:
         has_progress = settings.QUESTIONNAIRE_PROGRESS in ('async', 'default')
         async_progress = settings.QUESTIONNAIRE_PROGRESS == 'async'
@@ -824,10 +825,6 @@ def answer_summary(questionnaire, answers=None):
         summary.append((question.number, question.text, [
             (n, t, choice_totals[n]) for (n, t) in choices], freeforms))
     return summary
-    
-def has_tag(tag, runinfo):
-    """ Returns true if the given runinfo contains the given tag. """
-    return tag in (t.strip() for t in runinfo.tags.split(','))
 
 def dep_check(expr, runinfo, answerdict):
     """

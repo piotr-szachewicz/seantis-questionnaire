@@ -44,7 +44,7 @@
     </div>
 
     <form name="qform" id="qform" action="{{ request.path }}" method="POST">
-    
+
         {% csrf_token %}
 
         <input type="hidden" name="questionset_id" value="{{ questionset.id }}">
@@ -70,8 +70,8 @@
                     {% include qdict.template %}
                 {% else %}
                     <div class="question-text {% if qdict.required %}required{% endif %}">
-                        <span class="qnumber">{{ question.display_number }}.</span> 
-                        {{ question.text }}
+                        <span class="qnumber">{{ question.display_number }}.</span>
+                        {{ question.text | adapt_to_sex:runinfo }}
                     </div>
                     <div class="answer">
                         {% if error %}

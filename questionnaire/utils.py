@@ -40,6 +40,10 @@ def numal0_sort(a, b):
     """
     return numal_sort(a[0], b[0])
 
+def has_tag(tag, runinfo):
+    """ Returns true if the given runinfo contains the given tag. """
+    return tag in (t.strip() for t in runinfo.tags.split(','))
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()

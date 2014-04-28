@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load questionnaire i18n %}
 
 <div class="clearfix">
     <div class="input">
@@ -7,7 +7,7 @@
             <li>
                 <label>
                     <input onClick="valchanged('{{ question.number }}_{{ choice.value }}', this.checked);" type="checkbox" id="{{ key }}" name="{{ key }}" value="{{ choice.value }}" {{ checked }}>
-                    <span>{{ choice.text }}</span>
+                    <span>{{ choice.text | adapt_to_sex:runinfo }}</span>
                 </label>
             </li>
         {% endfor %}
