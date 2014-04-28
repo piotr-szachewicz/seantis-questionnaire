@@ -20,13 +20,13 @@ class ChoiceInline(admin.TabularInline):
     extra = 5
 
 class QuestionSetAdmin(admin.ModelAdmin):
-    ordering = ['questionnaire', 'sortid', ]
-    list_filter = ['questionnaire', ]
-    list_display = ['questionnaire', 'heading', 'sortid', ]
-    list_editable = ['sortid', ]
+    ordering = ['section', 'sortid']
+    list_filter = ['section',]
+    list_display = ['heading', 'questionnaire', 'section', 'sortid', ]
+    list_editable = ['sortid', 'section']
 
 class QuestionAdmin(admin.ModelAdmin):
-    ordering = ['questionset__questionnaire', 'questionset', 'number']
+    ordering = ['questionset__section', 'questionset', 'number']
     inlines = [ChoiceInline]
 
     def changelist_view(self, request, extra_context=None):
@@ -53,6 +53,12 @@ class RunInfoAdmin(admin.ModelAdmin):
 class RunInfoHistoryAdmin(admin.ModelAdmin):
     pass
 
+class SectionAdmin(admin.ModelAdmin):    
+    ordering = ['questionnaire', 'sortid']
+    list_filter = ['questionnaire',]
+    list_display = ['name', 'questionnaire', 'sortid', ]
+    list_editable = ['sortid', 'questionnaire']
+
 class AnswerAdmin(admin.ModelAdmin):
     search_fields = ['subject', 'runid', 'question', 'answer']
     list_display = ['runid', 'subject', 'question']
@@ -64,5 +70,6 @@ adminsite.register(Question, QuestionAdmin)
 adminsite.register(QuestionSet, QuestionSetAdmin)
 adminsite.register(Subject, SubjectAdmin)
 adminsite.register(RunInfo, RunInfoAdmin) 
-adminsite.register(RunInfoHistory, RunInfoHistoryAdmin) 
+adminsite.register(RunInfoHistory, RunInfoHistoryAdmin)
+adminsite.register(Section, SectionAdmin) 
 adminsite.register(Answer, AnswerAdmin)

@@ -71,11 +71,16 @@ class Questionnaire(models.Model):
     def __unicode__(self):
         return self.name
 
+    def sections(self):
+        if not hasattr(self, "__sectioncache"):
+            self.__sectioncache = Section.objects.filter(questionnaire=self).order_by('sortid')
+        return self.__sectioncache
+    
     def questionsets(self):
-        if not hasattr(self, "__qscache"):
-            self.__qscache = \
-              QuestionSet.objects.filter(questionnaire=self).order_by('sortid')
-        return self.__qscache
+        questionsets = []
+        for section in self.sections():
+            questionsets += section.questionsets()
+        return questionsets
 
     class Meta:
         permissions = (
@@ -83,16 +88,37 @@ class Questionnaire(models.Model):
             ("management", "Management Tools")
         )
 
-class QuestionSet(models.Model):
+class SortableModel(models.Model):
+    sortid = models.IntegerField() # used to decide which order to display in
+
+    class Meta:
+        abstract = True
+
+class Section(SortableModel):
+    questionnaire = models.ForeignKey(Questionnaire)
+    name = models.CharField(max_length=64)
+
+    def questionsets(self):
+        if not hasattr(self, "__qscache"):
+            self.__qscache = \
+              QuestionSet.objects.filter(section=self).order_by('sortid')
+        return self.__qscache
+
+    def __unicode__(self):
+        return self.name
+
+class QuestionSet(SortableModel):
     __metaclass__ = TransMeta
 
     "Which questions to display on a question page"
-    questionnaire = models.ForeignKey(Questionnaire)
-    sortid = models.IntegerField() # used to decide which order to display in
+    section = models.ForeignKey(Section)
     heading = models.CharField(max_length=64)
     checks = models.CharField(max_length=128, blank=True,
         help_text = """Current options are 'femaleonly' or 'maleonly' and shownif="QuestionNumber,Answer" which takes the same format as <tt>requiredif</tt> for questions.""")
     text = models.TextField(help_text="This is interpreted as Textile: <a href='http://hobix.com/textile/quick.html'>http://hobix.com/textile/quick.html</a>")
+
+    def questionnaire(self):
+        return self.section.questionnaire
 
     def questions(self):
         if not hasattr(self, "__qcache"):
@@ -101,7 +127,7 @@ class QuestionSet(models.Model):
         return self.__qcache
 
     def next(self):
-        qs = self.questionnaire.questionsets()
+        qs = self.questionnaire().questionsets()
         retnext = False
         for q in qs:
             if retnext:
@@ -111,7 +137,7 @@ class QuestionSet(models.Model):
         return None
 
     def prev(self):
-        qs = self.questionnaire.questionsets()
+        qs = self.questionnaire().questionsets()
         last = None
         for q in qs:
             if q == self:
@@ -120,20 +146,20 @@ class QuestionSet(models.Model):
 
     def is_last(self):
         try:
-            return self.questionnaire.questionsets()[-1] == self
+            return self.questionnaire().questionsets()[-1] == self
         except NameError:
             # should only occur if not yet saved
             return True
 
     def is_first(self):
         try:
-            return self.questionnaire.questionsets()[0] == self
+            return self.questionnaire().questionsets()[0] == self
         except NameError:
             # should only occur if not yet saved
             return True
 
     def __unicode__(self):
-        return u'%s: %s' % (self.questionnaire.name, self.heading)
+        return u'%s: %s' % (self.questionnaire().name, self.heading)
 
     class Meta:
         translate = ('text',)
@@ -370,11 +396,10 @@ class Question(models.Model):
         translate = ('text', 'extra', 'footer')
 
 
-class Choice(models.Model):
+class Choice(SortableModel):
     __metaclass__ = TransMeta
 
     question = models.ForeignKey(Question)
-    sortid = models.IntegerField()
     value = models.CharField(u"Short Value", max_length=64)
     text = models.CharField(u"Choice Text", max_length=200)
     tags = models.CharField(u"Tags", max_length=64, blank=True)

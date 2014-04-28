@@ -31,7 +31,7 @@ def spanclass(string):
 def qtesturl(question):
     qset = question.questionset
     return reverse("questionset",
-        args=("test:%s" % qset.questionnaire.id,
+        args=("test:%s" % qset.questionnaire().id,
          qset.sortid))
 
 @register.filter(name='adapt_to_sex')

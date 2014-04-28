@@ -40,7 +40,7 @@ def get_runinfo(random):
 
 def get_question(number, questionnaire):
     "Return the specified Question (by number) from the specified Questionnaire"
-    res = Question.objects.filter(number=number, questionset__questionnaire=questionnaire)
+    res = Question.objects.filter(number=number, questionset__section__questionnaire=questionnaire)
     return res and res[0] or None
 
 
@@ -87,7 +87,8 @@ def check_parser(runinfo, exclude=[]):
         "maleonly": lambda v: runinfo.subject.gender == 'male',
         "femaleonly": lambda v: runinfo.subject.gender == 'female',
         "shownif": lambda v: v and depparser.parse(v),
-        "iftag": lambda v: v and tagparser.parse(v)
+        "iftag": lambda v: v and tagparser.parse(v),
+        "requiredif": lambda v: v and depparser.parse(v),
     }
 
     for ex in exclude:
@@ -140,7 +141,6 @@ def questionset_satisfies_checks(questionset, runinfo, checks=None):
     """
 
     passes = check_parser(runinfo)
-
     if not passes(questionset.checks):
         return False
 
@@ -171,7 +171,7 @@ def get_progress(runinfo):
     position, total = 0, 0
     
     current = runinfo.questionset
-    sets = current.questionnaire.questionsets()
+    sets = current.section.questionsets()
 
     checks = fetch_checks(sets)
 
@@ -305,7 +305,7 @@ def questionnaire(request, runcode=None, qs=None):
 
     if request.method != "POST":
         if qs is not None:
-            qs = get_object_or_404(QuestionSet, sortid=qs, questionnaire=runinfo.questionset.questionnaire)
+            qs = get_object_or_404(QuestionSet, sortid=qs, section=runinfo.questionset.section)
             if runinfo.random.startswith('test:'):
                 pass # ok for testing
             elif qs.sortid > runinfo.questionset.sortid:
@@ -335,7 +335,7 @@ def questionnaire(request, runcode=None, qs=None):
     except:
         pass
 
-    questionnaire = runinfo.questionset.questionnaire
+    questionnaire = runinfo.questionset.questionnaire()
     questionset = runinfo.questionset
 
     # to confirm that we have the correct answers
@@ -472,8 +472,6 @@ def show_questionnaire(request, runinfo, errors={}):
 
         # if we got here the questionset will at least contain one question
         # which passes, so this is all we need to check for
-        if not question_satisfies_checks(question, runinfo):
-            continue
 
         Type = question.get_type()
         _qnum, _qalpha = split_numal(question.number)
@@ -863,7 +861,7 @@ def dep_check(expr, runinfo, answerdict):
     check_questionnum, check_answer = expr.split(",",1)
     try:
         check_question = Question.objects.get(number=check_questionnum,
-          questionset__questionnaire = questionnaire)
+          questionset__section__questionnaire = questionnaire)
     except Question.DoesNotExist:
         return False
 

@@ -23,14 +23,21 @@ function togglehide(id) {
 </H2>
 
 <div id="questionnaire-{{ questionnaire.id }}" style="margin-bottom: 2em;">
-{%   for questionset in questionnaire.questionsets %}
-<H4>QuestionSet: <a href="/admin/questionnaire/questionset/{{ questionset.id }}/"><font color="#111">{{ questionset.heading }} ({{ questionset.sortid }})</font></a></H4>
-{%     for q in questionset.questions %}
-<a href="{{ q.id }}/">{{ q.number }}. {{ q.text }}</a> [{{ q.type }}]<br />
-{%     endfor %}
-&rarr; <a href="add/?questionset={{ questionset.id }}">Add Question to <tt>{{ questionset.heading }}</tt></a>
-{%   endfor %}
-<br /><br />&rarr; <a href="/admin/questionnaire/questionset/add/?questionnaire={{ questionnaire.id }}">Add QuestionSet to <tt>{{ questionnaire.name }}</tt></a>
-</div>
+
+	{% for section in questionnaire.sections %}
+		<h3><a href="/admin/questionnaire/section/{{ section.id }}/">{{ section.name }}</a></h3>
+	
+		{%   for questionset in section.questionsets %}
+		<H4>QuestionSet: <a href="/admin/questionnaire/questionset/{{ questionset.id }}/"><font color="#111">{{ questionset.heading }} ({{ questionset.sortid }})</font></a></H4>
+			{%     for q in questionset.questions %}
+			<a href="{{ q.id }}/">{{ q.number }}. {{ q.text }}</a> [{{ q.type }}]<br />
+			{%     endfor %}
+		&rarr; <a href="add/?questionset={{ questionset.id }}">Add Question to <tt>{{ questionset.heading }}</tt></a>
+		{%   endfor %}
+		<br /><br />&rarr; <a href="/admin/questionnaire/questionset/add/?section={{ section.id }}">Add QuestionSet to <tt>{{ section.name }}</tt></a>
+		</div>
+	{% endfor %}
+
 {% endfor %}
+
 {% endblock %}
