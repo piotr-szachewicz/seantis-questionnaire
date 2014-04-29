@@ -3,7 +3,7 @@ from django.utils.translation import ugettext as _, ungettext
 from json import dumps
 from questionnaire.utils import get_answer, get_answer_multiple
 
-@question_proc('choice', 'choice-freeform')
+@question_proc('choice', 'choice-freeform', 'select')
 def question_choice(request, question):
     choices = []
     jstriggers = []
@@ -32,7 +32,7 @@ def question_choice(request, question):
         'jstriggers': jstriggers,
     }
 
-@answer_proc('choice', 'choice-freeform')
+@answer_proc('choice', 'choice-freeform', 'select')
 def process_choice(question, answer):
     opt = answer['ANSWER'] or ''
     if not opt:
@@ -93,7 +93,7 @@ def process_multiple(question, answer):
     if multiple_freeform:
         multiple.append(multiple_freeform)
     return dumps(multiple)
+
+add_type('select', 'Drop-down list [select]')
 add_type('choice-multiple', 'Multiple-Choice, Multiple-Answers [checkbox]')
 add_type('choice-multiple-freeform', 'Multiple-Choice, Multiple-Answers, plus freeform [checkbox, input]')
-
-

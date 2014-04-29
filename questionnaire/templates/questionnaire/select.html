@@ -1,0 +1,19 @@
+{% load questionnaire i18n %}
+
+<div class="clearfix">
+    <div class="input">
+        <select id="{{ question.number }}_{{ forloop.counter }}" name="question_{{ question.number }}" 
+        onchange="valchanged('{{ question.number }}', this.options[this.selectedIndex].value)">
+        	<option value=""></option>
+
+        {% for sel, choice in qdict.choices %}
+        	<option value="{{ choice.value }}" {% if sel %} selected {% endif %}>
+        		{{ choice.text | adapt_to_sex:runinfo }}
+        	</option>
+        {% endfor %}
+        </select>
+        {% if question.extra %}
+        	<span class="help-block">{{ question.extra }}</span>
+        {% endif %}
+    </div>
+</div>
