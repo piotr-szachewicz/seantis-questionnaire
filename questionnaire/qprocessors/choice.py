@@ -54,20 +54,21 @@ add_type('choice-freeform', 'Choice with a freeform option [radio]')
 @question_proc('choice-multiple', 'choice-multiple-freeform')
 def question_multiple(request, question):
     cd = question.getcheckdict()
-    [choices, extras] = get_answer_multiple(question, request)
+    [choices, extras, jstriggers] = get_answer_multiple(question, request)
 
     return {
         "choices": choices,
         "extras": extras,
         "template"  : "questionnaire/choice-multiple-freeform.html",
         "required" : cd.get("required", False) and cd.get("required") != "0",
-
+        'jstriggers': jstriggers,
     }
 
 @answer_proc('choice-multiple', 'choice-multiple-freeform')
 def process_multiple(question, answer):
     multiple = []
     multiple_freeform = []
+    clarify = {}
 
     requiredcount = 0
     required = question.getcheckdict().get('required', 0)
@@ -84,12 +85,15 @@ def process_multiple(question, answer):
             multiple.append(v)
         if k.startswith('more') and len(v.strip()) > 0:
             multiple_freeform.append(v)
+        if k.startswith('clarify'):
+            clarify[k.replace('clarify_', '')] = v
 
     if len(multiple) + len(multiple_freeform) < requiredcount:
         raise AnswerException(ungettext(u"You must select at least %d option",
                                         u"You must select at least %d options",
                                         requiredcount) % requiredcount)
     multiple.sort()
+    multiple.append(clarify)
     if multiple_freeform:
         multiple.append(multiple_freeform)
     return dumps(multiple)

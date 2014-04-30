@@ -1,5 +1,6 @@
 #!/usr/bin/python
 from django.conf import settings
+from json import loads
 
 def split_numal(val):
     """Split, for example, '1a' into (1, 'a')
@@ -63,39 +64,56 @@ def get_answer(question, request, multiple=False):
 def get_answer_multiple(question,request):    
     cd = question.getcheckdict()
     defaults = cd.get('default','').split(',')
-
-    choices = []
-    answers = get_answer(question, request, True)
-    if answers:
-        extra_answers = answers[-1]
-    else:
-        extra_answers = []
-        answers = []
-
-    for choice in question.choices():
-        key = "question_%s_multiple_%d" % (question.number, choice.sortid)
-        if key in request.POST or choice.value in answers or \
-            (request.method == 'GET' and choice.value in defaults):
-            choices.append( (choice, key, ' checked',) )
-        else:
-            choices.append( (choice, key, '',) )
-    
     extracount = int(cd.get('extracount', 0))
     if not extracount and question.type == 'choice-multiple-freeform':
         extracount = 1
+    clarify_choices = loads(cd.get('clarify_choices', '{}').replace('\'', '\"'))
+
+    choices = []
+    extra_answers = []
+    clarify_answers = {}
+    answers = get_answer(question, request, True)
+    if answers:
+        if extracount > 0:
+            extra_answers = answers[-1]
+        if clarify_choices:
+            clarify_answers = answers[-(extracount>0)-1]
+    else:
+        answers = []      
+
+    jstriggers = []
+
+    for idx, choice in enumerate(question.choices()):
+        key = "question_%s_multiple_%d" % (question.number, choice.sortid)
+        checked = ''
+
+        if key in request.POST or choice.value in answers or \
+            (request.method == 'GET' and choice.value in defaults):
+            checked = ' checked'
+
+        clarify_text = clarify_choices.get(choice.value, None)
+        if clarify_text:
+            clarify_key = "question_%s_clarify_%s" % (question.number, choice.value)
+            clarify = {'text': clarify_text, 'key': clarify_key, 'value': clarify_answers.get(choice.value, '')}
+            jstriggers.append(clarify_key)
+        else:
+            clarify = None
+
+        choices.append( (choice, key, checked,  clarify) )
+
     extras = []
     for i in range(extracount):
-        key = "question_%s_more%d" % (question.number, i+1)
+        key = "question_%s_more_%d" % (question.number, i+1)
 
         data = ''
         if key in request.POST:
             data = request.POST[key]
         elif len(extra_answers) > i:
             data = extra_answers[i]
-        
+
         extras.append( (key, data,) )
-    
-    return choices, extras
+
+    return choices, extras, jstriggers
 
 def get_setting(key, default=None):
     try:
