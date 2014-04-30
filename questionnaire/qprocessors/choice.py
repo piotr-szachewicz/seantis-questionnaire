@@ -24,6 +24,7 @@ def question_choice(request, question):
         jstriggers.append('%s_comment' % question.number)
 
     return {
+        'freeform_text': cd.get('freeform_text', ''),
         'choices'   : choices,
         'sel_entry' : val == '_entry_',
         'qvalue'    : val or '',
