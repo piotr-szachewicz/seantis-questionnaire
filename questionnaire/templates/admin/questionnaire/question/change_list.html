@@ -35,9 +35,8 @@ function togglehide(id) {
 		&rarr; <a href="add/?questionset={{ questionset.id }}">Add Question to <tt>{{ questionset.heading }}</tt></a>
 		{%   endfor %}
 		<br /><br />&rarr; <a href="/admin/questionnaire/questionset/add/?section={{ section.id }}">Add QuestionSet to <tt>{{ section.name }}</tt></a>
-		</div>
 	{% endfor %}
-
+	</div>
 {% endfor %}
 
 {% endblock %}
