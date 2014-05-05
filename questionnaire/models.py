@@ -82,6 +82,12 @@ class Questionnaire(models.Model):
             questionsets += section.questionsets()
         return questionsets
 
+    def questions(self):
+        questions = []
+        for questionset in self.questionsets():
+            questions += questionset.questions()
+        return questions
+
     class Meta:
         permissions = (
             ("export", "Can export questionnaire answers"),
