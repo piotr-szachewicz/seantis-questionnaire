@@ -309,7 +309,7 @@ class Question(models.Model):
         "choose from. If a question is multiple-choice, enter the choices " \
         "this user can choose from below'.")
     extra = models.CharField(u"Extra information", max_length=128, blank=True, null=True, help_text=u"Extra information (use  on question type)")
-    checks = models.CharField(u"Additional checks", max_length=128, blank=True,
+    checks = models.CharField(u"Additional checks", max_length=512, blank=True,
         null=True, help_text="Additional checks to be performed for this "
         "value (space separated)  <br /><br />"
         "For text fields, <tt>required</tt> is a valid check.<br />"
