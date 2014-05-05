@@ -57,7 +57,7 @@ def get_answer(question, request, multiple=False):
         answer = Answer.get_answer(request.runinfo.runid, question.id)
         if answer:
             current = answer.split_answer()
-            if not multiple:
+            if current and not multiple:
                 return current[0]
     return current
 
