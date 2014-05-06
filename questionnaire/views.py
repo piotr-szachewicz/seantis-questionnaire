@@ -454,10 +454,10 @@ def show_questionnaire(request, runinfo, errors={}):
     Also add the javascript dependency code.
     """
     request.runinfo = runinfo
-    if request.GET.get('show_all') == '1': # for debugging purposes.
-        questions = runinfo.questionset.section.questionnaire.questions()
-    else:
-        questions = runinfo.questionset.questions()
+    
+    show_all = request.GET.get('show_all') == '1' # for debugging purposes in some cases we may want to show all questions on one screen.
+    questionset = runinfo.questionset
+    questions = questionset.section.questionnaire.questions() if show_all else questionset.questions() 
 
     qlist = []
     jsinclude = []      # js files to include
@@ -476,7 +476,7 @@ def show_questionnaire(request, runinfo, errors={}):
         # if we got here the questionset will at least contain one question
         # which passes, so this is all we need to check for
         
-        question_visible = question_satisfies_checks(question, runinfo)
+        question_visible = question_satisfies_checks(question, runinfo) or show_all
         Type = question.get_type()
         _qnum, _qalpha = split_numal(question.number)
 
