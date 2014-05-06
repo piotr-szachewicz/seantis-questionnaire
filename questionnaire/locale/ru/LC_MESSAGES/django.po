@@ -7,16 +7,24 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
-"Report-Msgid-Bugs-To: Victor Safronivich <vsafronovich@gmail.com>\n"
-"POT-Creation-Date: 2012-08-24 09:15+0600\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-05-06 09:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Victor Safronivich <vsafronovich@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+
+#: .\admin.py:51
+msgid "Download data"
+msgstr ""
+
+#: .\admin.py:54
+msgid "Export to CSV"
+msgstr ""
 
 #: .\models.py:16
 msgid "Active"
@@ -78,33 +86,38 @@ msgstr ""
 msgid "Language"
 msgstr "Язык"
 
-#: .\views.py:805 .\templates\questionnaire\choice-yesnocomment.html.py:10
+#: .\models.py:303
+msgid "Text"
+msgstr ""
+
+#: .\views.py:810 .\templates\questionnaire\choice-yesnocomment.html:10
 msgid "Yes"
 msgstr "Да"
 
-#: .\views.py:805 .\templates\questionnaire\choice-yesnocomment.html.py:18
+#: .\views.py:810 .\templates\questionnaire\choice-yesnocomment.html:18
 msgid "No"
 msgstr "Нет"
 
-#: .\views.py:807 .\templates\questionnaire\choice-yesnocomment.html.py:27
+#: .\views.py:812 .\templates\questionnaire\choice-yesnocomment.html:27
 msgid "Don't Know"
 msgstr "Не известно"
 
-#: .\qprocessors\choice.py:38 .\qprocessors\simple.py:68
+#: .\qprocessors\choice.py:40 .\qprocessors\simple.py:67
 msgid "You must select an option"
 msgstr "Вы должны выбрать ответ"
 
-#: .\qprocessors\choice.py:42 .\qprocessors\simple.py:72
-#: .\qprocessors\simple.py:74 .\qprocessors\simple.py:76
-#: .\qprocessors\simple.py:79 .\qprocessors\timeperiod.py:56
+#: .\qprocessors\choice.py:44 .\qprocessors\range_or_number.py:43
+#: .\qprocessors\simple.py:71 .\qprocessors\simple.py:73
+#: .\qprocessors\simple.py:75 .\qprocessors\simple.py:78
+#: .\qprocessors\timeperiod.py:56
 msgid "Field cannot be blank"
 msgstr "Поле не может быть пустым"
 
-#: .\qprocessors\choice.py:47
+#: .\qprocessors\choice.py:49
 msgid "Invalid option!"
 msgstr "Не правильный ответ!"
 
-#: .\qprocessors\choice.py:108
+#: .\qprocessors\choice.py:93
 #, python-format
 msgid "You must select at least %d option"
 msgid_plural "You must select at least %d options"
@@ -116,7 +129,11 @@ msgstr[2] "Вы должны выбрать как минимум %d ответ�
 msgid "Processor not defined for this question"
 msgstr "Для этого вопроса не определен обработчик"
 
-#: .\qprocessors\range.py:41
+#: .\qprocessors\range_or_number.py:48
+msgid "Could not convert the number"
+msgstr ""
+
+#: .\qprocessors\range_or_number.py:51
 msgid "Out of range"
 msgstr "Вне диапазона значений"
 
@@ -156,15 +173,15 @@ msgstr "Неправильный временной интервал"
 msgid "Time period must be a whole number"
 msgstr "Временной интервал должен быть целым числом"
 
-#: .\templates\admin\questionnaire\question\change_form.html.py:10
+#: .\templates\admin\questionnaire\question\change_form.html:10
 msgid "Choices"
 msgstr "Варианты ответов"
 
-#: .\templates\admin\questionnaire\question\change_form.html.py:12
+#: .\templates\admin\questionnaire\question\change_form.html:12
 msgid "Sortid determines the choice order."
 msgstr "Поле обозначает порядок ответов"
 
-#: .\templates\admin\questionnaire\question\change_form.html.py:13
+#: .\templates\admin\questionnaire\question\change_form.html:13
 msgid ""
 "Short values will appear in exported data and are \n"
 "referenced in 'Additional checks' fields.  Numbers, letters \n"
@@ -173,18 +190,18 @@ msgstr ""
 "Краткие значения появятся в данных экспорта. \n"
 "Допустимы числа, буквы или простые слова."
 
-#: .\templates\questionnaire\choice-yesnocomment.html.py:35
+#: .\templates\questionnaire\choice-yesnocomment.html:35
 msgid "comment"
 msgstr "комментарий"
 
-#: .\templates\questionnaire\questionset.html.py:58
+#: .\templates\questionnaire\questionset.html:74
 msgid "edit"
 msgstr "редактировать"
 
-#: .\templates\questionnaire\questionset.html.py:95
+#: .\templates\questionnaire\questionset.html:111
 msgid "Continue"
 msgstr "далее"
 
-#: .\templates\questionnaire\questionset.html.py:100
+#: .\templates\questionnaire\questionset.html:116
 msgid "return to previous page"
 msgstr "вернуть на предыдущую страницу"

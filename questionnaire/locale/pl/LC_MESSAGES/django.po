@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-25 15:00+0200\n"
+"POT-Creation-Date: 2014-05-06 09:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,14 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
+
+#: .\admin.py:51
+msgid "Download data"
+msgstr "Ściągnij dane"
+
+#: .\admin.py:54
+msgid "Export to CSV"
+msgstr "Eksportuj do CSV"
 
 #: .\models.py:16
 msgid "Active"
@@ -78,34 +86,38 @@ msgstr "Osobie wysyłany jest papierowy formularz"
 msgid "Language"
 msgstr "Język"
 
-#: .\views.py:804 .\templates\questionnaire\choice-yesnocomment.html:10
-#: .\templates\questionnaire\questionset.html:103
+#: .\models.py:303
+msgid "Text"
+msgstr "Tekst"
+
+#: .\views.py:810 .\templates\questionnaire\choice-yesnocomment.html:10
 msgid "Yes"
 msgstr "Tak"
 
-#: .\views.py:804 .\templates\questionnaire\choice-yesnocomment.html:18
+#: .\views.py:810 .\templates\questionnaire\choice-yesnocomment.html:18
 msgid "No"
 msgstr "Nie"
 
-#: .\views.py:806 .\templates\questionnaire\choice-yesnocomment.html:27
+#: .\views.py:812 .\templates\questionnaire\choice-yesnocomment.html:27
 msgid "Don't Know"
 msgstr "Nie wiem"
 
-#: .\qprocessors\choice.py:38 .\qprocessors\simple.py:68
+#: .\qprocessors\choice.py:40 .\qprocessors\simple.py:67
 msgid "You must select an option"
 msgstr "Musisz wybrać odpowiedź."
 
-#: .\qprocessors\choice.py:42 .\qprocessors\simple.py:72
-#: .\qprocessors\simple.py:74 .\qprocessors\simple.py:76
-#: .\qprocessors\simple.py:79 .\qprocessors\timeperiod.py:56
+#: .\qprocessors\choice.py:44 .\qprocessors\range_or_number.py:43
+#: .\qprocessors\simple.py:71 .\qprocessors\simple.py:73
+#: .\qprocessors\simple.py:75 .\qprocessors\simple.py:78
+#: .\qprocessors\timeperiod.py:56
 msgid "Field cannot be blank"
 msgstr "Pole nie może być puste"
 
-#: .\qprocessors\choice.py:47
+#: .\qprocessors\choice.py:49
 msgid "Invalid option!"
 msgstr "Nieprawidłowa opcja!"
 
-#: .\qprocessors\choice.py:108
+#: .\qprocessors\choice.py:93
 #, python-format
 msgid "You must select at least %d option"
 msgid_plural "You must select at least %d options"
@@ -116,7 +128,11 @@ msgstr[1] "Musisz wybrać przynajmniej %d odpowiedzi"
 msgid "Processor not defined for this question"
 msgstr "Processor nie został zdefiniowany dla tego pytania"
 
-#: .\qprocessors\range_or_number.py:46
+#: .\qprocessors\range_or_number.py:48
+msgid "Could not convert the number"
+msgstr "Niepoprawna wartość"
+
+#: .\qprocessors\range_or_number.py:51
 msgid "Out of range"
 msgstr "Wartość poza dozwolonym zakresem"
 
@@ -169,7 +185,8 @@ msgid ""
 "Short values will appear in exported data and are \n"
 "referenced in 'Additional checks' fields.  Numbers, letters \n"
 "or single words are valid."
-msgstr "W eksportowanych danych będą widoczne krótkie wartości i są\n"
+msgstr ""
+"W eksportowanych danych będą widoczne krótkie wartości i są\n"
 "używane do tworzenia powiązań w polu 'Additional checks'.\n"
 "Liczby, litery i pojedyncze wyrazy są poprawnymi wartościami."
 
@@ -177,14 +194,14 @@ msgstr "W eksportowanych danych będą widoczne krótkie wartości i są\n"
 msgid "comment"
 msgstr "Komentarz"
 
-#: .\templates\questionnaire\questionset.html:61
+#: .\templates\questionnaire\questionset.html:74
 msgid "edit"
 msgstr "Edytuj"
 
-#: .\templates\questionnaire\questionset.html:98
+#: .\templates\questionnaire\questionset.html:111
 msgid "Continue"
 msgstr "Kontynuuj"
 
-#: .\templates\questionnaire\questionset.html:103
+#: .\templates\questionnaire\questionset.html:116
 msgid "return to previous page"
 msgstr "Powróć do poprzedniej strony"

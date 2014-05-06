@@ -38,10 +38,14 @@ def process_range_or_number(question, answer):
 
     convert = range_type(rmin, rmax, rstep)
 
+    ans = answer['ANSWER']
+    if not ans:
+        raise AnswerException(_(u"Field cannot be blank"))
+
     try:
-    	ans = convert(answer['ANSWER'])
+    	ans = convert(ans)
     except:
-	   raise AnswerException("Could not convert `%r`")
+	   raise AnswerException(_(u"Could not convert the number"))
     
     if ans > convert(rmax) or ans < convert(rmin):
         raise AnswerException(_(u"Out of range"))
