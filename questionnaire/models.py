@@ -75,7 +75,7 @@ class Questionnaire(models.Model):
         if not hasattr(self, "__sectioncache"):
             self.__sectioncache = Section.objects.filter(questionnaire=self).order_by('sortid')
         return self.__sectioncache
-    
+
     def questionsets(self):
         questionsets = []
         for section in self.sections():
@@ -308,7 +308,7 @@ class Question(models.Model):
         "multiple-choice gives the user a number of choices he/she can " \
         "choose from. If a question is multiple-choice, enter the choices " \
         "this user can choose from below'.")
-    extra = models.CharField(u"Extra information", max_length=128, blank=True, null=True, help_text=u"Extra information (use  on question type)")
+    extra = models.CharField(u"Extra information", max_length=512, blank=True, null=True, help_text=u"Extra information (use  on question type)")
     checks = models.CharField(u"Additional checks", max_length=512, blank=True,
         null=True, help_text="Additional checks to be performed for this "
         "value (space separated)  <br /><br />"
@@ -322,7 +322,7 @@ class Question(models.Model):
         "You may also combine tests appearing in <tt>requiredif</tt> "
         "by joining them with the words <tt>and</tt> or <tt>or</tt>, "
         'eg. <tt>requiredif="Q1,A or Q2,B"</tt>')
-    post_save_code = models.TextField(u"Post save code", blank=True, 
+    post_save_code = models.TextField(u"Post save code", blank=True,
         help_text="You may execute some code when answer is saved for this question. E.g.:<br/>"
         "<code>if self.split_answer()[0] >= 18:<br/>"
         "&nbsp;&nbsp;runinfo.add_tags(['of_age'])<br/>"
@@ -349,7 +349,7 @@ class Question(models.Model):
 
     def __unicode__(self):
         return u'{%s} (%s) %s' % (unicode(self.questionset), self.number, self.text)
-        
+
     def sameas(self):
         if self.type == 'sameas':
             try:
@@ -451,7 +451,7 @@ class Answer(models.Model):
         try:
             return json.loads(self.answer)
         except ValueError:
-            # this was likely saved as plain text, try to guess what the 
+            # this was likely saved as plain text, try to guess what the
             # value(s) were
             if 'multiple' in self.question.type:
                 return self.answer.split('; ')
