@@ -1,7 +1,7 @@
 from questionnaire import *
 from django.utils.translation import ugettext as _, ungettext
 from json import dumps
-from questionnaire.utils import get_answer, get_answer_multiple
+from questionnaire.utils import get_answer, get_answer_multiple, parse_int
 
 @question_proc('choice', 'choice-freeform', 'select')
 def question_choice(request, question):
@@ -70,16 +70,17 @@ def process_multiple(question, answer):
     multiple = []
     multiple_freeform = []
     clarify = {}
+    choices_count = question.choices().count()
 
-    requiredcount = 0
     required = question.getcheckdict().get('required', 0)
+    requiredcount = 0
     if required:
-        try:
-            requiredcount = int(required)
-        except ValueError:
-            requiredcount = 1
-    if requiredcount and requiredcount > question.choices().count():
+        requiredcount = parse_int(required, 1)
+    if requiredcount and requiredcount > choices_count:
         requiredcount = question.choices().count()
+
+    maxcount = question.getcheckdict().get('maxcount', None)    
+    maxcount = parse_int(maxcount, None)
 
     for k, v in answer.items():
         if k.startswith('multiple'):
@@ -89,10 +90,16 @@ def process_multiple(question, answer):
         if k.startswith('clarify'):
             clarify[k.replace('clarify_', '')] = v
 
-    if len(multiple) + len(multiple_freeform) < requiredcount:
+    number_of_choices = len(multiple) + len(multiple_freeform)
+    if number_of_choices < requiredcount:
         raise AnswerException(ungettext(u"You must select at least %d option",
                                         u"You must select at least %d options",
                                         requiredcount) % requiredcount)
+    if maxcount and number_of_choices > maxcount:
+        raise AnswerException(ungettext(u"You can select at most %d option",
+                                        u"You can select at most %d options",
+                                        maxcount) % maxcount)
+
     multiple.sort()
     multiple.append(clarify)
     if multiple_freeform:

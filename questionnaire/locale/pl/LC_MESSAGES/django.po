@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-06 09:06+0200\n"
+"POT-Creation-Date: 2014-05-06 16:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,12 +117,19 @@ msgstr "Pole nie może być puste"
 msgid "Invalid option!"
 msgstr "Nieprawidłowa opcja!"
 
-#: .\qprocessors\choice.py:93
+#: .\qprocessors\choice.py:95
 #, python-format
 msgid "You must select at least %d option"
 msgid_plural "You must select at least %d options"
 msgstr[0] "Musisz wybrać przynajmniej %d odpowiedź"
 msgstr[1] "Musisz wybrać przynajmniej %d odpowiedzi"
+
+#: .\qprocessors\choice.py:99
+#, python-format
+msgid "You can select at most %d option"
+msgid_plural "You can select at most %d options"
+msgstr[0] "Możesz wybrać co najwyżej %d odpowiedź"
+msgstr[1] "Możesz wybrać co najwyżej %d odpowiedzi"
 
 #: .\qprocessors\custom.py:27
 msgid "Processor not defined for this question"

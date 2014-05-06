@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-06 09:06+0200\n"
+"POT-Creation-Date: 2014-05-06 16:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -115,10 +115,17 @@ msgstr "Dieses Feld muss ausgefüllt werden"
 msgid "Invalid option!"
 msgstr "Ungültige Angabe"
 
-#: .\qprocessors\choice.py:93
+#: .\qprocessors\choice.py:95
 #, python-format
 msgid "You must select at least %d option"
 msgid_plural "You must select at least %d options"
+msgstr[0] "Sie müssen mindestens %d Option auswählen"
+msgstr[1] "Sie müssen mindestens %d Optionen auswählen"
+
+#: .\qprocessors\choice.py:99
+#, fuzzy, python-format
+msgid "You can select at most %d option"
+msgid_plural "You can select at most %d options"
 msgstr[0] "Sie müssen mindestens %d Option auswählen"
 msgstr[1] "Sie müssen mindestens %d Optionen auswählen"
 

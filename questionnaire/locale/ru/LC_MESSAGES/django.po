@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-06 09:06+0200\n"
+"POT-Creation-Date: 2014-05-06 16:04+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: Victor Safronivich <vsafronovich@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -117,10 +117,18 @@ msgstr "Поле не может быть пустым"
 msgid "Invalid option!"
 msgstr "Не правильный ответ!"
 
-#: .\qprocessors\choice.py:93
+#: .\qprocessors\choice.py:95
 #, python-format
 msgid "You must select at least %d option"
 msgid_plural "You must select at least %d options"
+msgstr[0] "Вы должны выбрать как минимум %d ответ"
+msgstr[1] "Вы должны выбрать как минимум %d ответа"
+msgstr[2] "Вы должны выбрать как минимум %d ответов"
+
+#: .\qprocessors\choice.py:99
+#, fuzzy, python-format
+msgid "You can select at most %d option"
+msgid_plural "You can select at most %d options"
 msgstr[0] "Вы должны выбрать как минимум %d ответ"
 msgstr[1] "Вы должны выбрать как минимум %d ответа"
 msgstr[2] "Вы должны выбрать как минимум %d ответов"

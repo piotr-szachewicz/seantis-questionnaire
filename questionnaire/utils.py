@@ -121,6 +121,14 @@ def get_setting(key, default=None):
     except AttributeError:
         return default
 
+def parse_int(str, default=None):
+    if str:
+        try:
+            return int(str)
+        except ValueError:
+            return default
+    return None
+
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
