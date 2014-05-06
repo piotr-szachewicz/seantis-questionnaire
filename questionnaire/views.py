@@ -473,14 +473,15 @@ def show_questionnaire(request, runinfo, errors={}):
     substitute_answer(qvalues, runinfo.questionset)
 
     for question in questions:
-
         # if we got here the questionset will at least contain one question
         # which passes, so this is all we need to check for
-
+        
+        question_visible = question_satisfies_checks(question, runinfo)
         Type = question.get_type()
         _qnum, _qalpha = split_numal(question.number)
 
         qdict = {
+            'css_style': '' if question_visible else 'display:none;',
             'template' : 'questionnaire/%s.html' % (Type),
             'qnum' : _qnum,
             'qalpha' : _qalpha,
