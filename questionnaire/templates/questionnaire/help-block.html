@@ -1,4 +1,4 @@
 {% load questionnaire i18n %}
 {% if question.extra %}
-<span class="help-block">{{ question.sameas.extra | adapt_to_sex:runinfo }}</span>
+<span class="help-block">{{ question.sameas.extra | adapt:runinfo }}</span>
 {% endif %}

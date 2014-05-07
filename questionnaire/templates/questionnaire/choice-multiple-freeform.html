@@ -7,7 +7,7 @@
             <li>
                 <label>
                     <input onClick="valchanged('{{ question.number }}_{{ choice.value }}', this.checked);" type="checkbox" id="{{ key }}" name="{{ key }}" value="{{ choice.value }}" {{ checked }}>
-                    <span>{{ choice.text | adapt_to_sex:runinfo }}</span>
+                    <span>{{ choice.text | adapt:runinfo }}</span>
                     {% if clarify %}
                     	({{ clarify.text }} &nbsp;<input type="text" id="{{clarify.key}}" name="{{clarify.key}}" value="{{clarify.value}}" checks="dep_check('{{question.number}},{{choice.value}}')">)
                     {% endif %}

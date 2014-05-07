@@ -86,7 +86,7 @@
                 {% else %}
                     <div class="question-text {% if qdict.required %}required{% endif %}">
                         <span class="qnumber">{{ question.display_number }}.</span>
-                        {{ question.text | adapt_to_sex:runinfo }}
+                        {{ question.text | adapt:runinfo }}
                     </div>
                     <div class="answer">
                         {% if error %}

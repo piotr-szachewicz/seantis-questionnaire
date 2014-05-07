@@ -8,7 +8,7 @@
 
         {% for sel, choice in qdict.choices %}
         	<option value="{{ choice.value }}" {% if sel %} selected {% endif %}>
-        		{{ choice.text | adapt_to_sex:runinfo }}
+        		{{ choice.text | adapt:runinfo }}
         	</option>
         {% endfor %}
         </select>
