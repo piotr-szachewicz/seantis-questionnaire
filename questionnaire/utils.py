@@ -77,7 +77,12 @@ def get_answer_multiple(question,request):
         if extracount > 0:
             extra_answers = answers[-1]
         if clarify_choices:
-            clarify_answers = answers[-(extracount>0)-1]
+            try:
+                clarify_answers = answers[-(extracount>0)-1]
+                if type(clarify_answers) is not dict:
+                    clarify_answers = {}
+            except IndexError:
+                clarify_answers = {}
     else:
         answers = []      
 

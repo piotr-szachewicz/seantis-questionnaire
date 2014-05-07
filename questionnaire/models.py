@@ -360,7 +360,7 @@ class Question(models.Model):
                         break
                     elif check == 'sameas':
                         kwargs['number'] = value
-                        kwargs['questionset__questionnaire'] = self.questionset.questionnaire
+                        kwargs['questionset__section__questionnaire'] = self.questionset.section.questionnaire
                         break
 
                 self.__sameas = res = getattr(self, "__sameas", Question.objects.get(**kwargs))
@@ -431,7 +431,7 @@ class Answer(models.Model):
     answer = models.TextField()
 
     def __unicode__(self):
-        return "Answer(%s: %s, %s)" % (self.question.number, self.subject.surname, self.subject.givenname)
+        return "Answer(%s: %s, %s, %s)" % (self.question.number, self.subject.surname, self.subject.givenname, self.answer)
 
     @staticmethod
     def get_answer(runid, question_id):
@@ -473,16 +473,15 @@ class Answer(models.Model):
             print 'No runinfo provided -- tags will not be updated.'
             return
         for choice in self.question.choices():
-            for split_answer in self.split_answer():
-                tags = choice.tags
-                if not tags:
-                    continue
-                tags = tags.split(',')
+            tags = choice.tags
+            if not tags:
+                continue
+            tags = tags.split(',')
+            runinfo.remove_tags(tags)
 
+            for split_answer in self.split_answer():
                 if str(split_answer) == choice.value:
                     runinfo.add_tags(tags)
-                else:
-                    runinfo.remove_tags(tags)
         runinfo.save()
 
     def _execute_post_save_code(self, runinfo):

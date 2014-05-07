@@ -7,15 +7,17 @@ from questionnaire.utils import get_answer, get_answer_multiple, parse_int
 def question_choice(request, question):
     choices = []
     jstriggers = []
-
     cd = question.getcheckdict()
-    key = "question_%s" % question.number
-    key2 = "question_%s_comment" % question.number
 
-    val = get_answer(question, request)
-    if not val:
-        if 'default' in cd:
-            val = cd['default']
+    val = None
+    comment = ''
+    answer = get_answer(question, request, True)
+    if answer:
+        val = answer[0]
+        if len(answer) == 2:
+            comment = answer[1]
+    elif 'default' in cd:
+        val = cd['default']
 
     for choice in question.choices():
         choices.append( ( choice.value == val, choice, ) )
@@ -29,7 +31,7 @@ def question_choice(request, question):
         'sel_entry' : val == '_entry_',
         'qvalue'    : val or '',
         'required'  : True,
-        'comment'   : request.POST.get(key2, ""),
+        'comment'   : comment,
         'jstriggers': jstriggers,
     }
 
@@ -39,10 +41,10 @@ def process_choice(question, answer):
     if not opt:
         raise AnswerException(_(u'You must select an option'))
     if opt == '_entry_' and question.type == 'choice-freeform':
-        opt = answer.get('comment','')
-        if not opt:
+        comment = answer.get('comment','')
+        if not comment:
             raise AnswerException(_(u'Field cannot be blank'))
-        return dumps([[opt]])
+        return dumps([opt, comment])
     else:
         valid = [c.value for c in question.choices()]
         if opt not in valid:
@@ -85,10 +87,12 @@ def process_multiple(question, answer):
     for k, v in answer.items():
         if k.startswith('multiple'):
             multiple.append(v)
-        if k.startswith('more') and len(v.strip()) > 0:
+        if k.startswith('more'):
             multiple_freeform.append(v)
         if k.startswith('clarify'):
             clarify[k.replace('clarify_', '')] = v
+            if len(v.strip()) == 0:
+                raise AnswerException(_(u'Field cannot be blank'))
 
     number_of_choices = len(multiple) + len(multiple_freeform)
     if number_of_choices < requiredcount:
