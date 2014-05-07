@@ -28,7 +28,7 @@
 
         {% if question.extra %}
             <li>
-                <span class="help-block">{{ question.extra }}</span>
+                {% include 'questionnaire/help-block.html' %}
             </li>
         {% endif %}
     </div>

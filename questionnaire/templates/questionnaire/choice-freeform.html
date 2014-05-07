@@ -18,9 +18,8 @@
                 </label>
             </li>
         </ul>
-		{% if question.extra %}
-	        <span class="help-block">{{ question.extra }}</span>
-	    {% endif %}
+
+		{% include 'questionnaire/help-block.html' %}
     </div>
 </div>
 

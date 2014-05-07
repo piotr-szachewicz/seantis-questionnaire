@@ -2,8 +2,6 @@
 <div class="clearfix">
     <div class="input">
         <textarea class="span8" name="question_{{ question.number }}" cols="60" rows="10">{{ qdict.value }}</textarea>
-        {% if question.extra %}
-            <span class="help-block">{{ question.extra }}</span>
-        {% endif %}
+        {% include 'questionnaire/help-block.html' %}
     </div>
 </div>
