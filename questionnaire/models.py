@@ -186,6 +186,7 @@ class RunInfo(models.Model):
     # questionset should be set to the first QuestionSet initially, and to null on completion
     # ... although the RunInfo entry should be deleted then anyway.
     questionset = models.ForeignKey(QuestionSet, blank=True, null=True) # or straight int?
+    furthest_questionset = models.ForeignKey(QuestionSet, blank=True, null=True, related_name="furthest") # the furthest questionset that user saw up to now 
     emailcount = models.IntegerField(default=0)
 
     created = models.DateTimeField(auto_now_add=True)
@@ -208,6 +209,12 @@ class RunInfo(models.Model):
 
     def save(self, **kwargs):
         self.random = (self.random or '').lower()
+
+        if not self.furthest_questionset:
+            self.furthest_questionset = self.questionset
+        if self.questionset and self.questionset.sortid > self.furthest_questionset.sortid:
+            self.furthest_questionset = self.questionset
+
         super(RunInfo, self).save(**kwargs)
 
     def add_tags(self, tags):
