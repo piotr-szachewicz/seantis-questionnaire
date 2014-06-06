@@ -240,6 +240,7 @@ def redirect_to_qs(runinfo):
             next = next.next()
         
         runinfo.questionset = next
+
         runinfo.save()
 
         hasquestionset = bool(next)
@@ -405,10 +406,20 @@ def questionnaire(request, runcode=None, qs=None):
 
     questionset_done.send(sender=None,runinfo=runinfo,questionset=questionset)
 
-    next = questionset.next()
-    while next and not questionset_satisfies_checks(next, runinfo):
-        next = next.next()
-    runinfo.questionset = next
+    return _display_questionset(request, runcode, qs, lambda questionset: questionset.next())
+
+def previous_questionset(request, runcode=None, qs=None):
+    return _display_questionset(request, runcode, qs, lambda questionset: questionset.prev())
+
+def _display_questionset(request, runcode=None, qs=None, func=None):
+    runinfo = get_runinfo(runcode)
+    questionset = runinfo.questionset
+    questionset = func(questionset)
+
+    while questionset and not questionset_satisfies_checks(questionset, runinfo):
+        questionset = func(questionset)
+    runinfo.questionset = questionset
+
     runinfo.save()
 
     if next is None: # we are finished

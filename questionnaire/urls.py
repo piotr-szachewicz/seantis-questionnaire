@@ -9,4 +9,5 @@ urlpatterns = patterns('',
     url(r'^(?P<runcode>[^/]+)/progress/$',  get_async_progress, name='progress'),
     url(r'^(?P<runcode>[^/]+)/(?P<qs>[-]{0,1}\d+)/$', questionnaire, name='questionset'),
     url(r'^(?P<runcode>[^/]+)/$', questionnaire, name='questionnaire'),
+    url(r'^(?P<runcode>[^/]+)/(?P<qs>[-]{0,1}\d+)/previous/$', previous_questionset, name='previous'),
 )
