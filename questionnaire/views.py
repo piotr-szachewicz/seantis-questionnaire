@@ -414,15 +414,16 @@ def previous_questionset(request, runcode=None, qs=None):
 def _display_questionset(request, runcode=None, qs=None, func=None):
     runinfo = get_runinfo(runcode)
     questionset = runinfo.questionset
-    questionset = func(questionset)
+    questionnaire = questionset.questionnaire()
 
+    questionset = func(questionset)
     while questionset and not questionset_satisfies_checks(questionset, runinfo):
         questionset = func(questionset)
     runinfo.questionset = questionset
 
     runinfo.save()
 
-    if next is None: # we are finished
+    if questionset is None: # we are finished
         return finish_questionnaire(runinfo, questionnaire)
 
     transaction.commit()
