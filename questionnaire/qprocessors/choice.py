@@ -5,31 +5,42 @@ from questionnaire.utils import get_answer, get_answer_multiple, parse_int
 
 def get_freeform_position(question):
     cd = question.getcheckdict()
-    freeform_position = int(cd.get('freeform_position', len(question.choices())))
-    return freeform_position
+    freeform_position = cd.get('freeform_position')
 
-@question_proc('choice', 'choice-freeform', 'select')
+    if freeform_position:
+        return int(freeform_position)
+    else:
+        return None
+
+@question_proc('choice', 'select')
 def question_choice(request, question):
     choices = []
     jstriggers = []
     cd = question.getcheckdict()
+    freeform_position = get_freeform_position(question)
 
     val = None
     comment = ''
+    remark = ''
     answer = get_answer(question, request, True)
     if answer:
         val = answer[0]
         if len(answer) == 2:
+            if freeform_position:
+                comment = answer[1]
+            else:
+                remark = answer[1]
+        elif len(answer) == 3:
             comment = answer[1]
+            remark = answer[2]
     elif 'default' in cd:
         val = cd['default']
 
     for choice in question.choices():
         choices.append( ( choice.value == val, choice, ) )
 
-    if question.type == 'choice-freeform':
+    if freeform_position:
         jstriggers.append('%s_comment' % question.number)
-    freeform_position = get_freeform_position(question)
 
     return {
         'freeform_text': cd.get('freeform_text', ''),
@@ -39,29 +50,32 @@ def question_choice(request, question):
         'required'  : True,
         'comment'   : comment,
         'jstriggers': jstriggers,
+        'remarks': cd.get('remarks', None),
+        'remark_value': remark
     }
 
-@answer_proc('choice', 'choice-freeform', 'select')
+@answer_proc('choice', 'select')
 def process_choice(question, answer):
     opt = answer['ANSWER'] or ''
     freeform_position = get_freeform_position(question)
-    freeform_choice_value = question.choices()[freeform_position-1].value
+    freeform_choice_value = question.choices()[freeform_position-1].value if freeform_position else None
+    comment = None
+    remarks = answer.get('remarks', None)
 
     if not opt:
         raise AnswerException(_(u'You must select an option'))
-    if opt == freeform_choice_value and question.type == 'choice-freeform':
+    if opt == freeform_choice_value:
         comment = answer.get('comment','')
         if not comment:
             raise AnswerException(_(u'Field cannot be blank'))
-        return dumps([opt, comment])
     else:
         valid = [c.value for c in question.choices()]
         if opt not in valid:
             raise AnswerException(_(u'Invalid option!'))
-    return dumps([opt])
-add_type('choice', 'Choice [radio]')
-add_type('choice-freeform', 'Choice with a freeform option [radio]')
 
+    result = [ v for v in [opt, comment, remarks] if v ] # only not-None values
+    return dumps(result)
+add_type('choice', 'Choice [radio]')
 
 @question_proc('choice-multiple', 'choice-multiple-freeform')
 def question_multiple(request, question):
