@@ -3,6 +3,11 @@ from django.utils.translation import ugettext as _, ungettext
 from json import dumps
 from questionnaire.utils import get_answer, get_answer_multiple, parse_int
 
+def get_freeform_position(question):
+    cd = question.getcheckdict()
+    freeform_position = int(cd.get('freeform_position', len(question.choices())))
+    return freeform_position
+
 @question_proc('choice', 'choice-freeform', 'select')
 def question_choice(request, question):
     choices = []
@@ -24,11 +29,12 @@ def question_choice(request, question):
 
     if question.type == 'choice-freeform':
         jstriggers.append('%s_comment' % question.number)
+    freeform_position = get_freeform_position(question)
 
     return {
         'freeform_text': cd.get('freeform_text', ''),
+        'freeform_position': freeform_position,
         'choices'   : choices,
-        'sel_entry' : val == '_entry_',
         'qvalue'    : val or '',
         'required'  : True,
         'comment'   : comment,
@@ -38,9 +44,12 @@ def question_choice(request, question):
 @answer_proc('choice', 'choice-freeform', 'select')
 def process_choice(question, answer):
     opt = answer['ANSWER'] or ''
+    freeform_position = get_freeform_position(question)
+    freeform_choice_value = question.choices()[freeform_position-1].value
+
     if not opt:
         raise AnswerException(_(u'You must select an option'))
-    if opt == '_entry_' and question.type == 'choice-freeform':
+    if opt == freeform_choice_value and question.type == 'choice-freeform':
         comment = answer.get('comment','')
         if not comment:
             raise AnswerException(_(u'Field cannot be blank'))
