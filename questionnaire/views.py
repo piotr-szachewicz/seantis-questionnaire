@@ -745,11 +745,11 @@ def answer_export(questionnaire, answers=None):
     if answers is None:
         answers = Answer.objects.all()
     answers = answers.filter(
-        question__questionset__questionnaire=questionnaire).order_by(
+        question__questionset__section__questionnaire=questionnaire).order_by(
         'subject', 'runid', 'question__questionset__sortid', 'question__number')
     answers = answers.select_related()
     questions = Question.objects.filter(
-        questionset__questionnaire=questionnaire)
+        questionset__section__questionnaire=questionnaire)
     headings = _table_headers(questions)
 
     coldict = {}
